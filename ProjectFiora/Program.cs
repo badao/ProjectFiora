@@ -551,7 +551,7 @@ namespace FioraProject
         public static bool InMiddileWall (Vector2 firstwall, Vector2 lastwall)
         {
             var midwall = new Vector2((firstwall.X + lastwall.X)/2,(firstwall.Y + lastwall.Y)/2);
-            var point = midwall.Extend(Game.CursorPos.To2D(), 75);
+            var point = midwall.Extend(Game.CursorPos.To2D(), 50);
             for (int i = 0; i <= 350; i = i + 10  )
             {
                 var testpoint = point.RotateAround(midwall, i);
