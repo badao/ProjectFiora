@@ -416,7 +416,7 @@ namespace FioraProject
                     {
                         var pos1 = pos.RotateAround(firstwall, i);
                         //var pos3 = firstwall.RotateAround(Player.Position.To2D(), -i);
-                        var pos2 = firstwall.Extend(pos1, 400 - Player.BoundingRadius);
+                        var pos2 = firstwall.Extend(pos1, 400 - Player.BoundingRadius * 2);
                         //var pos4 = Player.Position.To2D().Extend(pos3, 400);
                         if (pos1.InTheCone(firstwall,Game.CursorPos.To2D(),60) && pos1.IsWall() && !pos2.IsWall())
                         {
