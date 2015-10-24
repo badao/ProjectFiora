@@ -458,13 +458,16 @@ namespace FioraProject
                 {
                     if (Utils.GameTimeTickCount - movetick < (70 + Math.Min(60, Game.Ping)))
                         break;
-                    if(Player.Position.To2D().Extend(Game.CursorPos.To2D(),i).IsWall())
+                    if(Player.Distance(Game.CursorPos) <= 800 && Player.Position.To2D().Extend(Game.CursorPos.To2D(),i).IsWall())
                     {
                         Player.IssueOrder(GameObjectOrder.MoveTo, Player.Position.To2D().Extend(Game.CursorPos.To2D(), i - 20).To3D());
                         movetick = Utils.GameTimeTickCount;
                         break;
                     }
-                    Player.IssueOrder(GameObjectOrder.MoveTo, Player.Position.To2D().Extend(Game.CursorPos.To2D(), 200).To3D());
+                    Player.IssueOrder(GameObjectOrder.MoveTo,
+                        Player.Distance(Game.CursorPos) <= 800 ?
+                        Player.Position.To2D().Extend(Game.CursorPos.To2D(), 200).To3D() : 
+                        Game.CursorPos);
                 }
                 if (y.IsWall() && Prediction.GetPrediction(Player, 500).UnitPosition.Distance(Player.Position) <= 10 && Q.IsReady())
                 {
