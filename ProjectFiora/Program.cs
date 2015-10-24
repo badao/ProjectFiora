@@ -1835,9 +1835,9 @@ namespace FioraProject
                     evadeMenu.Bool("W", "Use W");
                     var aaMenu = new Menu("Auto Attack", "AA");
                     {
-                        aaMenu.Bool("B", "Basic Attack");
+                        aaMenu.Bool("B", "Basic Attack",false);
                         aaMenu.Slider("BHpU", "-> If Hp < (%)", 35);
-                        aaMenu.Bool("C", "Crit Attack");
+                        aaMenu.Bool("C", "Crit Attack",false);
                         aaMenu.Slider("CHpU", "-> If Hp < (%)", 40);
                         evadeMenu.AddSubMenu(aaMenu);
                     }
