@@ -421,7 +421,7 @@ namespace FioraProject
                         for (int i = 0; i <= 359; i++)
                         {
                             var pos1 = pos.RotateAround(firstwall, i);
-                            var pos2 = firstwall.Extend(pos1, 400 - Player.BoundingRadius * 2);
+                            var pos2 = firstwall.Extend(pos1, 400);
                             if (pos1.InTheCone(firstwall, Game.CursorPos.To2D(), 60) && pos1.IsWall() && !pos2.IsWall())
                             {
                                 Render.Circle.DrawCircle(firstwall.To3D(), 50, Color.Green);
@@ -492,14 +492,23 @@ namespace FioraProject
                                 }
                             }
                         }
-                        else if (Utils.GameTimeTickCount - movetick < (70 + Math.Min(60, Game.Ping)))
+                        else if (Utils.GameTimeTickCount - movetick >= (70 + Math.Min(60, Game.Ping)))
+                        {
                             Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+                            movetick = Utils.GameTimeTickCount;
+                        }
                     }
-                    else if (Utils.GameTimeTickCount - movetick < (70 + Math.Min(60, Game.Ping)))
+                    else if (Utils.GameTimeTickCount - movetick >= (70 + Math.Min(60, Game.Ping)))
+                    {
                         Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+                        movetick = Utils.GameTimeTickCount;
+                    }
                 }
-                else if (Utils.GameTimeTickCount - movetick < (70 + Math.Min(60, Game.Ping)))
+                else if (Utils.GameTimeTickCount - movetick >= (70 + Math.Min(60, Game.Ping)))
+                {
                     Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+                    movetick = Utils.GameTimeTickCount;
+                }
             }
         }
         public static Vector2? GetFirstWallPoint(Vector2 from, Vector2 to, float step = 25)
@@ -525,13 +534,14 @@ namespace FioraProject
             if (Fstwall != null)
             {
                 var firstwall = ((Vector2)Fstwall);
-                for (float d = 0; d < firstwall.Distance(to) + 1000; d = d + step)
+                for (float d = step; d < firstwall.Distance(to) + 1000; d = d + step)
                 {
-                    var testPoint = from + d * direction;
+                    var testPoint = firstwall + d * direction;
                     var flags = NavMesh.GetCollisionFlags(testPoint.X, testPoint.Y);
-                    if (!flags.HasFlag(CollisionFlags.Wall) && !flags.HasFlag(CollisionFlags.Building))
+                    //if (!flags.HasFlag(CollisionFlags.Wall) && !flags.HasFlag(CollisionFlags.Building))
+                    if (!testPoint.IsWall())
                     {
-                        return from + (d - step) * direction;
+                        return firstwall + d * direction;
                     }
                 }
             }
