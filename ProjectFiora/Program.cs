@@ -410,7 +410,7 @@ namespace FioraProject
                 var Fstwall = GetFirstWallPoint(Player.Position.To2D(), Game.CursorPos.To2D());
                 if (Fstwall is Vector2)
                 {
-                    var firstwall = ((Vector2)Fstwall).Extend(Game.CursorPos.To2D(), 100);
+                    var firstwall = Player.Position.To2D().Extend(Game.CursorPos.To2D(),100);//((Vector2)Fstwall).Extend(Game.CursorPos.To2D(), 100);
                     for (int i = 0; i <= 0; i++)
                     {
                         var pos1 = firstwall.RotateAround(Player.Position.To2D(), i);
