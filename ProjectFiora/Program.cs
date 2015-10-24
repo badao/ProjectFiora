@@ -538,8 +538,8 @@ namespace FioraProject
                 {
                     var testPoint = firstwall + d * direction;
                     var flags = NavMesh.GetCollisionFlags(testPoint.X, testPoint.Y);
-                    //if (!flags.HasFlag(CollisionFlags.Wall) && !flags.HasFlag(CollisionFlags.Building))
-                    if (!testPoint.IsWall())
+                    if (!flags.HasFlag(CollisionFlags.Wall) && !flags.HasFlag(CollisionFlags.Building))
+                    //if (!testPoint.IsWall())
                     {
                         return firstwall + d * direction;
                     }
