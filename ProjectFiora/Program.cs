@@ -405,31 +405,32 @@ namespace FioraProject
                     }
                 }
             }
-            if (activewalljump && Game.CursorPos.IsWall())
+            if (activewalljump)
             {
                 var Fstwall = GetFirstWallPoint(Player.Position.To2D(), Game.CursorPos.To2D());
-                if (Fstwall is Vector2)
+                if (Fstwall != null)
                 {
-                    var firstwall = Player.Position.To2D().Extend(Game.CursorPos.To2D(),100);//((Vector2)Fstwall).Extend(Game.CursorPos.To2D(), 100);
-                    for (int i = 0; i <= 0; i++)
+                    var firstwall =((Vector2)Fstwall).Extend(Game.CursorPos.To2D(), 100);
+                    var pos = firstwall.Extend(Game.CursorPos.To2D(), 100);
+                    for (int i = 0; i <= 359; i++)
                     {
-                        var pos1 = firstwall.RotateAround(Player.Position.To2D(), i);
-                        var pos3 = firstwall.RotateAround(Player.Position.To2D(), -i);
-                        var pos2 = Player.Position.To2D().Extend(pos1, 400);
-                        var pos4 = Player.Position.To2D().Extend(pos3, 400);
-                        if (pos1.IsWall() && !pos2.IsWall())
+                        var pos1 = pos.RotateAround(firstwall, i);
+                        //var pos3 = firstwall.RotateAround(Player.Position.To2D(), -i);
+                        var pos2 = firstwall.Extend(pos1, 400 - Player.BoundingRadius);
+                        //var pos4 = Player.Position.To2D().Extend(pos3, 400);
+                        if (pos1.InTheCone(firstwall,Game.CursorPos.To2D(),60) && pos1.IsWall() && !pos2.IsWall())
                         {
-                            Render.Circle.DrawCircle(Game.CursorPos, 50, Color.Green);
+                            Render.Circle.DrawCircle(firstwall.To3D(), 50, Color.Green);
                             goto Finish;
                         }
-                        if (pos3.IsWall() && !pos4.IsWall())
-                        {
-                            Render.Circle.DrawCircle(Game.CursorPos, 50, Color.Green);
-                            goto Finish;
-                        }
+                        //if (pos3.IsWall() && !pos4.IsWall())
+                        //{
+                        //    Render.Circle.DrawCircle(firstwall.To3D(), 50, Color.Green);
+                        //    goto Finish;
+                        //}
                     }
 
-                    Render.Circle.DrawCircle(Game.CursorPos, 50, Color.Red);
+                    Render.Circle.DrawCircle(firstwall.To3D(), 50, Color.Red);
                 }
             Finish: ;
             }
@@ -444,31 +445,44 @@ namespace FioraProject
         #region WallJump
         public static bool usewalljump = true;
         public static bool activewalljump { get { return Menu.Item("WallJump").GetValue<KeyBind>().Active; } }
+        public static int movetick;
         public static void WallJump()
         {
             if (usewalljump && activewalljump)
             {
-                var x = Player.Position.Extend(Game.CursorPos, 100);
+                //var x = Player.Position.Extend(Game.CursorPos, 100);
                 var y = Player.Position.Extend(Game.CursorPos, 30);
-                if (!x.IsWall() && !y.IsWall()) Player.IssueOrder(GameObjectOrder.MoveTo, x);
-                if (x.IsWall() && !y.IsWall()) Player.IssueOrder(GameObjectOrder.MoveTo, y);
+                //if (!x.IsWall() && !y.IsWall()) Player.IssueOrder(GameObjectOrder.MoveTo, x);
+                //if (x.IsWall() && !y.IsWall()) Player.IssueOrder(GameObjectOrder.MoveTo, y);
+                for (int i = 20; i <= 300; i= i + 20)
+                {
+                    if (Utils.GameTimeTickCount - movetick < (70 + Math.Min(60, Game.Ping)))
+                        break;
+                    if(Player.Position.To2D().Extend(Game.CursorPos.To2D(),i).IsWall())
+                    {
+                        Player.IssueOrder(GameObjectOrder.MoveTo, Player.Position.To2D().Extend(Game.CursorPos.To2D(), i - 20).To3D());
+                        movetick = Utils.GameTimeTickCount;
+                        break;
+                    }
+                    Player.IssueOrder(GameObjectOrder.MoveTo, Player.Position.To2D().Extend(Game.CursorPos.To2D(), 200).To3D());
+                }
                 if (y.IsWall() && Prediction.GetPrediction(Player, 500).UnitPosition.Distance(Player.Position) <= 10 && Q.IsReady())
                 {
                     var pos = Player.Position.To2D().Extend(Game.CursorPos.To2D(),100);
-                    for (int i = 0; i <= 0; i++)
+                    for (int i = 0; i <= 359; i++)
                     {
                         var pos1 = pos.RotateAround(Player.Position.To2D(), i);
-                        var pos3 = pos.RotateAround(Player.Position.To2D(), 360-i);
+                        //var pos3 = pos.RotateAround(Player.Position.To2D(), 360-i);
                         var pos2 = Player.Position.To2D().Extend(pos1,400);
-                        var pos4 = Player.Position.To2D().Extend(pos3, 400);
-                        if (pos1.IsWall() && !pos2.IsWall())
+                        //var pos4 = Player.Position.To2D().Extend(pos3, 400);
+                        if (pos1.InTheCone(Player.Position.To2D(),Game.CursorPos.To2D(),60) && pos1.IsWall() && !pos2.IsWall())
                         {
                             Q.Cast(pos2);
                         }
-                        if (pos3.IsWall() && !pos4.IsWall())
-                        {
-                            Q.Cast(pos4);
-                        }
+                        //if (pos3.IsWall() && !pos4.IsWall())
+                        //{
+                        //    Q.Cast(pos4);
+                        //}
                     }
                 }
             }
