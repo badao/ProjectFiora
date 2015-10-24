@@ -35,7 +35,7 @@ namespace FioraProject
         {
             // Apply needed field delegate for damage calculation
             CustomDamageIndicator.damageToUnit = damageToUnit;
-            DrawingColor = System.Drawing.Color.Green;
+            DrawingColor = System.Drawing.Color.Pink;
             Enabled = true;
 
             // Register event handlers

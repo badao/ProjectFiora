@@ -42,6 +42,8 @@ namespace FioraProject
 
 
             Menu = new Menu("Project" + Player.ChampionName, Player.ChampionName, true);
+            Menu.SetFontStyle(System.Drawing.FontStyle.Bold,SharpDX.Color.DeepPink);
+
             Menu orbwalkerMenu = new Menu("Orbwalker", "Orbwalker");
             Orbwalker = new FioraProject.Orbwalking.Orbwalker(orbwalkerMenu);
             Menu.AddSubMenu(orbwalkerMenu);
@@ -65,6 +67,8 @@ namespace FioraProject
 
             Menu JungClear = spellMenu.AddSubMenu(new Menu("Jungle Clear", "Jungle Clear"));
 
+            Menu Misc = Menu.AddSubMenu(new Menu("Misc","Misc"));
+
             Menu Draw = Menu.AddSubMenu(new Menu("Draw", "Draw")); ;
 
             Harass.AddItem(new MenuItem("Use Q Harass", "Q Enable").SetValue(true));
@@ -75,10 +79,10 @@ namespace FioraProject
             Harass.AddItem(new MenuItem("Mana Harass", "Mana Harass").SetValue(new Slider(40, 0, 100)));
 
             Combo.AddItem(new MenuItem("Use Q Combo", "Q Enable").SetValue(true));
-            Combo.AddItem(new MenuItem("Use Q Combo Gap", "Use Q to gapclose").SetValue(true));
+            Combo.AddItem(new MenuItem("Use Q Combo Gap", "Use Q to gapclose").SetValue(false));
             Combo.AddItem(new MenuItem("Use Q Combo Pre Pass", "Use Q to hit pre-passive spot").SetValue(true));
             Combo.AddItem(new MenuItem("Use Q Combo Pass", "Use Q to hit passive").SetValue(true));
-            Combo.AddItem(new MenuItem("Use Q Combo Gap Minion", "Use Q minion to gapclose").SetValue(true));
+            Combo.AddItem(new MenuItem("Use Q Combo Gap Minion", "Use Q minion to gapclose").SetValue(false));
             Combo.AddItem(new MenuItem("Use Q Combo Gap Minion Value", "Q minion gapclose if % cdr >=").SetValue(new Slider(25, 0, 40)));
             Combo.AddItem(new MenuItem("Use E Combo", "E Enable").SetValue(true));
             Combo.AddItem(new MenuItem("Use R Combo", "R Enable").SetValue(true));
@@ -87,7 +91,7 @@ namespace FioraProject
             Combo.AddItem(new MenuItem("Use R Combo Killable", "Use R Killable").SetValue(true));
             Combo.AddItem(new MenuItem("Use R Combo On Tap", "Use R on Tap").SetValue(true));
             Combo.AddItem(new MenuItem("Use R Combo On Tap Key", "R on Tap key").SetValue(new KeyBind('G', KeyBindType.Press)));
-            Combo.AddItem(new MenuItem("Use R Combo Always", "Use R Always").SetValue(true));
+            Combo.AddItem(new MenuItem("Use R Combo Always", "Use R Always").SetValue(false));
 
             Target.AddItem(new MenuItem("Targeting Mode", "Targeting Mode").SetValue(new StringList(new string[] { "Optional", "Selected", "Priority", "Normal" })));
             Target.AddItem(new MenuItem("Orbwalk To Passive Range", "Orbwalk To Passive Range").SetValue(new Slider(300, 250, 500)));
@@ -96,7 +100,7 @@ namespace FioraProject
             Target.AddItem(new MenuItem("Note3", "in \" Combo Orbwalk to Passive\" mode can be found"));
             Target.AddItem(new MenuItem("Note4", "in orbwalker menu!"));
 
-            PriorityMode.AddItem(new MenuItem("Priority Range", "Priority Range").SetValue(new Slider(500, 300, 1000)));
+            PriorityMode.AddItem(new MenuItem("Priority Range", "Priority Range").SetValue(new Slider(1000, 300, 1000)));
             PriorityMode.AddItem(new MenuItem("Priority Orbwalk to Passive", "Orbwalk to Passive").SetValue(true));
             PriorityMode.AddItem(new MenuItem("Priority Under Tower", "Under Tower").SetValue(false));
             foreach (var hero in HeroManager.Enemies)
@@ -104,16 +108,16 @@ namespace FioraProject
                 PriorityMode.AddItem(new MenuItem("Priority" + hero.ChampionName, hero.ChampionName).SetValue(new Slider(2, 1, 5)));
             }
 
-            OptionalMode.AddItem(new MenuItem("Optional Range", "Optional Range").SetValue(new Slider(500, 300, 1000)));
+            OptionalMode.AddItem(new MenuItem("Optional Range", "Optional Range").SetValue(new Slider(1000, 300, 1000)));
             OptionalMode.AddItem(new MenuItem("Optional Orbwalk to Passive", "Orbwalk to Passive").SetValue(true));
             OptionalMode.AddItem(new MenuItem("Optional Under Tower", "Under Tower").SetValue(false));
             OptionalMode.AddItem(new MenuItem("Optional Switch Target Key", "Switch Target Key").SetValue(new KeyBind('T', KeyBindType.Press)));
             OptionalMode.AddItem(new MenuItem("Note5", "Also Can Left-click the target to switch!"));
 
-            SelectedMode.AddItem(new MenuItem("Selected Range", "Selected Range").SetValue(new Slider(500, 300, 1000)));
+            SelectedMode.AddItem(new MenuItem("Selected Range", "Selected Range").SetValue(new Slider(1000, 300, 1000)));
             SelectedMode.AddItem(new MenuItem("Selected Orbwalk to Passive", "Orbwalk to Passive").SetValue(true));
             SelectedMode.AddItem(new MenuItem("Selected Under Tower", "Under Tower").SetValue(false));
-            SelectedMode.AddItem(new MenuItem("Selected Switch If No Selected", "Switch to Optional if no target").SetValue(false));
+            SelectedMode.AddItem(new MenuItem("Selected Switch If No Selected", "Switch to Optional if no target").SetValue(true));
 
             LaneClear.AddItem(new MenuItem("Use E LClear", "E Enable").SetValue(true));
             LaneClear.AddItem(new MenuItem("Use Timat LClear", "Tiamat Enable").SetValue(true));
@@ -123,14 +127,16 @@ namespace FioraProject
             JungClear.AddItem(new MenuItem("Use Timat JClear", "Tiamat Enable").SetValue(true));
             JungClear.AddItem(new MenuItem("minimum Mana JC", "minimum Mana").SetValue(new Slider(40, 0, 100)));
 
-            Draw.AddItem(new MenuItem("Draw Q", "Draw Q").SetValue(true));
-            Draw.AddItem(new MenuItem("Draw W", "Draw W").SetValue(true));
+            Misc.AddItem(new MenuItem("WallJump","WallJump").SetValue(new KeyBind('H',KeyBindType.Press)));
+
+            Draw.AddItem(new MenuItem("Draw Q", "Draw Q").SetValue(false));
+            Draw.AddItem(new MenuItem("Draw W", "Draw W").SetValue(false));
             Draw.AddItem(new MenuItem("Draw Optional Range", "Draw Optional Range").SetValue(true));
             Draw.AddItem(new MenuItem("Draw Selected Range", "Draw Selected Range").SetValue(true));
             Draw.AddItem(new MenuItem("Draw Priority Range", "Draw Priority Range").SetValue(true));
             Draw.AddItem(new MenuItem("Draw Target", "Draw Target").SetValue(true));
-            Draw.AddItem(new MenuItem("Draw Vitals", "Draw Vitals").SetValue(true));
-            Draw.AddItem(new MenuItem("Draw Fast Damage", "Draw Fast Damage").SetValue(true)).ValueChanged += DrawHP_ValueChanged;
+            Draw.AddItem(new MenuItem("Draw Vitals", "Draw Vitals").SetValue(false));
+            Draw.AddItem(new MenuItem("Draw Fast Damage", "Draw Fast Damage").SetValue(false)).ValueChanged += DrawHP_ValueChanged;
 
             if (HeroManager.Enemies.Any())
             {
@@ -323,6 +329,7 @@ namespace FioraProject
                 return;
             FioraPassiveUpdate();
             OrbwalkToPassive();
+            WallJump();
             if (Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.Combo || Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.OrbwalkPassive)
             {
                 Combo();
@@ -398,12 +405,91 @@ namespace FioraProject
                     }
                 }
             }
+            if (activewalljump && Game.CursorPos.IsWall())
+            {
+                var Fstwall = GetFirstWallPoint(Player.Position.To2D(), Game.CursorPos.To2D());
+                if (Fstwall is Vector2)
+                {
+                    var firstwall = ((Vector2)Fstwall).Extend(Game.CursorPos.To2D(), 100);
+                    for (int i = 0; i <= 0; i++)
+                    {
+                        var pos1 = firstwall.RotateAround(Player.Position.To2D(), i);
+                        var pos3 = firstwall.RotateAround(Player.Position.To2D(), -i);
+                        var pos2 = Player.Position.To2D().Extend(pos1, 400);
+                        var pos4 = Player.Position.To2D().Extend(pos3, 400);
+                        if (pos1.IsWall() && !pos2.IsWall())
+                        {
+                            Render.Circle.DrawCircle(Game.CursorPos, 50, Color.Green);
+                            goto Finish;
+                        }
+                        if (pos3.IsWall() && !pos4.IsWall())
+                        {
+                            Render.Circle.DrawCircle(Game.CursorPos, 50, Color.Green);
+                            goto Finish;
+                        }
+                    }
+
+                    Render.Circle.DrawCircle(Game.CursorPos, 50, Color.Red);
+                }
+            Finish: ;
+            }
+
         }
         private static void Drawing_OnEndScene(EventArgs args)
         {
         }
 
         #endregion Drawing
+
+        #region WallJump
+        public static bool usewalljump = true;
+        public static bool activewalljump { get { return Menu.Item("WallJump").GetValue<KeyBind>().Active; } }
+        public static void WallJump()
+        {
+            if (usewalljump && activewalljump)
+            {
+                var x = Player.Position.Extend(Game.CursorPos, 100);
+                var y = Player.Position.Extend(Game.CursorPos, 30);
+                if (!x.IsWall() && !y.IsWall()) Player.IssueOrder(GameObjectOrder.MoveTo, x);
+                if (x.IsWall() && !y.IsWall()) Player.IssueOrder(GameObjectOrder.MoveTo, y);
+                if (y.IsWall() && Prediction.GetPrediction(Player, 500).UnitPosition.Distance(Player.Position) <= 10 && Q.IsReady())
+                {
+                    var pos = Player.Position.To2D().Extend(Game.CursorPos.To2D(),100);
+                    for (int i = 0; i <= 0; i++)
+                    {
+                        var pos1 = pos.RotateAround(Player.Position.To2D(), i);
+                        var pos3 = pos.RotateAround(Player.Position.To2D(), 360-i);
+                        var pos2 = Player.Position.To2D().Extend(pos1,400);
+                        var pos4 = Player.Position.To2D().Extend(pos3, 400);
+                        if (pos1.IsWall() && !pos2.IsWall())
+                        {
+                            Q.Cast(pos2);
+                        }
+                        if (pos3.IsWall() && !pos4.IsWall())
+                        {
+                            Q.Cast(pos4);
+                        }
+                    }
+                }
+            }
+        }
+        public static Vector2? GetFirstWallPoint(Vector2 from, Vector2 to, float step = 25)
+        {
+            var direction = (to - from).Normalized();
+
+            for (float d = 0; d < from.Distance(to); d = d + step)
+            {
+                var testPoint = from + d * direction;
+                var flags = NavMesh.GetCollisionFlags(testPoint.X, testPoint.Y);
+                if (flags.HasFlag(CollisionFlags.Wall) || flags.HasFlag(CollisionFlags.Building))
+                {
+                    return from + (d - step) * direction;
+                }
+            }
+
+            return null;
+        }
+        #endregion WallJump
 
         #region OrbwalkToPassive
         private static float OrbwalkToPassiveRange { get { return Menu.Item("Orbwalk To Passive Range").GetValue<Slider>().Value; } }
