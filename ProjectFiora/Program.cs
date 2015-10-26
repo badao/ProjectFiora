@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -1652,8 +1652,8 @@ namespace FioraProject
         #region Math And Extensions
         public static int CountMinionsInRange(this Vector3 Position, float Range, bool JungleTrueEnemyFalse)
         {
-            return ObjectManager.Get<Obj_AI_Minion>().Where(x => x.IsValidTarget(Range, true, Position)
-                && JungleTrueEnemyFalse ? x.Team == GameObjectTeam.Neutral : x.Team != GameObjectTeam.Neutral).Count();
+            return
+                MinionManager.GetMinions(Range,MinionTypes.All,JungleTrueEnemyFalse? MinionTeam.Neutral:MinionTeam.Enemy).Count;
         }
         public static float AngleToRadian(this int Angle)
         {
