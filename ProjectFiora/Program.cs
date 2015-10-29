@@ -2067,6 +2067,8 @@ namespace FioraProject
                 Spells.Add(
                     new SpellData { ChampionName = "Tristana", SpellNames = new[] { "detonatingshot" }, Slot = SpellSlot.E });
                 Spells.Add(
+                    new SpellData { ChampionName = "Tristana", SpellNames = new[] { "tristanar" }, Slot = SpellSlot.R });
+                Spells.Add(
                     new SpellData { ChampionName = "TwistedFate", SpellNames = new[] { "bluecardattack" }, Slot = SpellSlot.W });
                 Spells.Add(
                     new SpellData { ChampionName = "TwistedFate", SpellNames = new[] { "goldcardattack" }, Slot = SpellSlot.W });
@@ -3028,6 +3030,7 @@ namespace FioraProject
                 {
                     return;
                 }
+                // riven Q3
                 if (caster.ChampionName == "Riven"
                     && Menu.SubMenu("EvadeOthers").SubMenu(("Riven").ToLowerInvariant())
                     .Item("Riven" + SpellSlot.Q).GetValue<bool>()
@@ -3038,6 +3041,29 @@ namespace FioraProject
                         RivenQ3Rad = 150;
                     else
                         RivenQ3Rad = 225;
+                }
+                // others
+                var spellDatas =
+                   Spells.Where(
+                       i =>
+                       caster.ChampionName.ToLowerInvariant() == i.ChampionName.ToLowerInvariant()
+                       && Menu.SubMenu("EvadeOthers").SubMenu(i.ChampionName.ToLowerInvariant())
+                       .Item(i.ChampionName + i.Slot).GetValue<bool>());
+                if (!spellDatas.Any())
+                {
+                    return;
+                }
+                foreach (var spellData in spellDatas)
+                {
+                    //reksaj W
+                    if (!Player.HasBuff("reksaiknockupimmune") && spellData.ChampionName == "Reksai" 
+                        && spellData.Slot == SpellSlot.W && args.Animation == "Spell2_knockup" )// chua test
+                    {
+                        if (Player.Position.To2D().Distance(caster.Position.To2D())
+                            <= Player.BoundingRadius + caster.BoundingRadius + caster.AttackRange)
+                            SolveInstantBlock();
+                        return;
+                    }
                 }
             }
 
@@ -3052,8 +3078,6 @@ namespace FioraProject
                    Spells.Where(
                        i =>
                        caster.ChampionName.ToLowerInvariant() == i.ChampionName.ToLowerInvariant()
-                           //&& (i.UseSpellSlot ? args.Slot == i.Slot :
-                           //i.SpellNames.Any(x => x.ToLowerInvariant() == args.SData.Name.ToLowerInvariant()))
                        && Menu.SubMenu("EvadeOthers").SubMenu(i.ChampionName.ToLowerInvariant())
                        .Item(i.ChampionName + i.Slot).GetValue<bool>());
                 if (!spellDatas.Any())
@@ -3136,6 +3160,23 @@ namespace FioraProject
                             <= 800
                             && Player.HasBuff("kennenmarkofstorm") && Player.GetBuffCount("kennenmarkofstorm") == 2)
                             SolveInstantBlock();
+                        return;
+                    }
+                    if (spellData.ChampionName == "Azir" && spellData.Slot == SpellSlot.R && args.Slot == SpellSlot.R)// chua test
+                    {
+                        Vector2 start = caster.Position.To2D().Extend(args.End.To2D(), - 300);
+                        Vector2 end = start.Extend(caster.Position.To2D(), 750);
+                        Render.Circle.DrawCircle(start.To3D(), 50, Color.Red);
+                        Render.Circle.DrawCircle(end.To3D(), 50, Color.Red);
+                        float width = caster.Level >= 16 ? 125 * 6/2 :
+                                    caster.Level >= 11 ? 125 * 5/2 :
+                                    125 * 4/2;
+                        FioraProject.Evade.Geometry.Rectangle Rect = new FioraProject.Evade.Geometry.Rectangle(start, end, width);
+                        var Poly = Rect.ToPolygon();
+                        if (!Poly.IsOutside(Player.Position.To2D()))
+                        {
+                            SolveInstantBlock();
+                        }
                         return;
                     }
                 }
@@ -3357,19 +3398,6 @@ namespace FioraProject
                     }
                 }
 
-                ////leesin Q2
-                //var leesin = HeroManager.Enemies.FirstOrDefault(x => x.ChampionName == "Leesin" && x.IsValidTarget());
-                //if (leesin != null
-                //    && Menu.SubMenu("EvadeOthers").SubMenu(("Leesin").ToLowerInvariant())
-                //    .Item("Leesin" + SpellSlot.Q).GetValue<bool>())
-                //{
-                //    var buff = Player.GetBuff("PowerBall");// need to get buff;
-                //    if (buff != null && Player.Position.To2D().Distance(leesin.Position.To2D()) <= 300 + 1200 * Game.Ping / 1000)
-                //    {
-                //        SolveInstantBlock();
-                //        return;
-                //    }
-                //}
 
                 // rivenQ3
                 var riven = HeroManager.Enemies.FirstOrDefault(x => x.ChampionName == "Riven" && x.IsValidTarget());
@@ -3426,6 +3454,12 @@ namespace FioraProject
             }
             private static void LoadSpellData()
             {
+                Spells.Add(
+                    new SpellData
+                    {
+                        ChampionName = "Azir",
+                        Slot = SpellSlot.R,
+                    });
                 Spells.Add(
                     new SpellData
                     {
@@ -3552,6 +3586,12 @@ namespace FioraProject
                         ChampionName = "Rengar",
                         Slot = SpellSlot.Q,
                     });
+                Spells.Add(
+                new SpellData
+                {
+                    ChampionName = "Reksai",
+                    Slot = SpellSlot.W,
+                });
                 Spells.Add(
                     new SpellData
                     {
