@@ -12,6 +12,7 @@ using ItemData = LeagueSharp.Common.Data.ItemData;
 
 namespace FioraProject
 {
+    using static GetTargets;
     public static class Orbwalking
     {
         public delegate void AfterAttackEvenH(AttackableUnit unit, AttackableUnit target);
@@ -405,7 +406,7 @@ namespace FioraProject
             float extraWindup = 90,
             float holdAreaRadius = 0,
             bool useFixedDistance = true,
-            bool randomizeMinDistance = true)
+            bool randomizeMinDistance = true, bool useMove = true)
         {
             try
             {
@@ -429,7 +430,7 @@ namespace FioraProject
                     }
                 }
 
-                if (CanMove(extraWindup))
+                if (useMove && CanMove(extraWindup))
                 {
                     MoveTo(position, holdAreaRadius, false, useFixedDistance, randomizeMinDistance);
                 }
@@ -762,21 +763,21 @@ namespace FioraProject
                 AttackableUnit result = null;
                 if (ActiveMode == OrbwalkingMode.Combo || ActiveMode == OrbwalkingMode.OrbwalkPassive)
                 {
-                    if (Program.TargetingMode == Program.TargetMode.Optional)
-                        return Program.GetOptionalTarget();
-                    if (Program.TargetingMode == Program.TargetMode.Selected)
-                        return Program.GetSelectedTarget();
-                    if (Program.TargetingMode == Program.TargetMode.Priority)
-                        return Program.GetPriorityTarget();
+                    if (TargetingMode == TargetMode.Optional)
+                        return GetOptionalTarget();
+                    if (TargetingMode == TargetMode.Selected)
+                        return GetSelectedTarget();
+                    if (TargetingMode == TargetMode.Priority)
+                        return GetPriorityTarget();
                 }
                 if (ActiveMode == OrbwalkingMode.Mixed)
                 {
-                    if (Program.TargetingMode == Program.TargetMode.Optional && Program.GetOptionalTarget() != null)
-                        return Program.GetOptionalTarget();
-                    if (Program.TargetingMode == Program.TargetMode.Selected && Program.GetSelectedTarget() != null)
-                        return Program.GetSelectedTarget();
-                    if (Program.TargetingMode == Program.TargetMode.Priority && Program.GetPriorityTarget() != null)
-                        return Program.GetPriorityTarget();
+                    if (TargetingMode == TargetMode.Optional && GetOptionalTarget() != null)
+                        return GetOptionalTarget();
+                    if (TargetingMode == TargetMode.Selected && GetSelectedTarget() != null)
+                        return GetSelectedTarget();
+                    if (TargetingMode == TargetMode.Priority && GetPriorityTarget() != null)
+                        return GetPriorityTarget();
                 }
                 if ((ActiveMode == OrbwalkingMode.Mixed || ActiveMode == OrbwalkingMode.LaneClear) &&
                     !_config.Item("PriorizeFarm").GetValue<bool>())
@@ -950,7 +951,7 @@ namespace FioraProject
                     return;
                 if (_config.Item("AACircle").GetValue<Circle>().Active)
                 {
-                    Program.DrawCircle(
+                    Render.Circle.DrawCircle(
                         Player.Position, GetRealAutoAttackRange(null) + 65,
                         _config.Item("AACircle").GetValue<Circle>().Color);
                 }
@@ -960,7 +961,7 @@ namespace FioraProject
                     foreach (var target in
                         HeroManager.Enemies.FindAll(target => target.IsValidTarget(1175)))
                     {
-                        Program.DrawCircle(
+                        Render.Circle.DrawCircle(
                             target.Position, GetRealAutoAttackRange(target) + 65,
                             _config.Item("AACircle2").GetValue<Circle>().Color);
                     }
@@ -968,7 +969,7 @@ namespace FioraProject
 
                 if (_config.Item("HoldZone").GetValue<Circle>().Active)
                 {
-                    Program.DrawCircle(
+                    Render.Circle.DrawCircle(
                         Player.Position, _config.Item("HoldPosRadius").GetValue<Slider>().Value,
                         _config.Item("HoldZone").GetValue<Circle>().Color);
                 }

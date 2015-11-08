@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
@@ -36,16 +37,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="clipper_library">
-      <HintPath>D:\LeagueSharp\LeagueSharp\System\clipper_library.dll</HintPath>
+      <HintPath>E:\LeagueSharp\LeagueSharp\System\clipper_library.dll</HintPath>
     </Reference>
     <Reference Include="LeagueSharp">
-      <HintPath>D:\LeagueSharp\LeagueSharp\System\LeagueSharp.dll</HintPath>
+      <HintPath>E:\LeagueSharp\LeagueSharp\System\LeagueSharp.dll</HintPath>
     </Reference>
     <Reference Include="LeagueSharp.Common">
-      <HintPath>D:\LeagueSharp\LeagueSharp\System\LeagueSharp.Common.dll</HintPath>
+      <HintPath>E:\LeagueSharp\LeagueSharp\System\LeagueSharp.Common.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX">
-      <HintPath>D:\LeagueSharp\LeagueSharp\System\SharpDX.dll</HintPath>
+      <HintPath>E:\LeagueSharp\LeagueSharp\System\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -58,7 +59,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Combos.cs" />
     <Compile Include="CustomDamageIndicator.cs" />
+    <Compile Include="EvadeOthers.cs" />
+    <Compile Include="EvadeSkillShots.cs" />
+    <Compile Include="EvadeTargetedNoMissile.cs" />
+    <Compile Include="EvadeTargetedSkillShots.cs" />
     <Compile Include="Evade\Collision.cs" />
     <Compile Include="Evade\Config.cs" />
     <Compile Include="Evade\Evade.cs" />
@@ -70,7 +76,12 @@
     <Compile Include="Evade\SkillshotDetector.cs" />
     <Compile Include="Evade\SpellData.cs" />
     <Compile Include="Evade\SpellDatabase.cs" />
+    <Compile Include="FioraPassive.cs" />
+    <Compile Include="GetTargets.cs" />
+    <Compile Include="HINH1.cs" />
+    <Compile Include="MathAndExtensions.cs" />
     <Compile Include="Orbwalk.cs" />
+    <Compile Include="OrbwalkLastClick.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

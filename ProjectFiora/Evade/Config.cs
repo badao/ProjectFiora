@@ -127,7 +127,7 @@ namespace FioraProject.Evade
                         subMenu.Bool("IsDangerous", "Is Dangerous", spell.IsDangerous);
                         subMenu.Bool("DisableFoW", "Disable FoW Dodging", false);
                         subMenu.Bool("Draw", "Draw",false);
-                        subMenu.Bool("Enabled", "Enabled", !spell.DisabledByDefault);
+                        subMenu.Bool("Enabled", "Enabled",false /*!spell.DisabledByDefault*/);
                         ((LeagueSharp.Common.Menu)evadeMenu.SubMenu(spell.ChampionName.ToLowerInvariant())).AddSubMenu(subMenu);
                     }
                 }
