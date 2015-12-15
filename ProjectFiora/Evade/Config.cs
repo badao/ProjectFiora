@@ -29,7 +29,7 @@ namespace FioraProject.Evade
         public static LeagueSharp.Common.MenuItem KeyBind(this LeagueSharp.Common.Menu subMenu,
             string name,
             string display,
-            Keys key,
+            System.Windows.Forms.Keys key,
             KeyBindType type = KeyBindType.Press)
         {
             return subMenu.AddItem(new LeagueSharp.Common.MenuItem(name, display).SetValue<KeyBind>(new KeyBind((uint)key, type)));
@@ -132,8 +132,8 @@ namespace FioraProject.Evade
                     }
                 }
                 evadeMenu.Bool("DrawStatus", "Draw Evade Status");
-                evadeMenu.KeyBind("Enabled", "Enabled", Keys.K, KeyBindType.Toggle);
-                evadeMenu.KeyBind("OnlyDangerous", "Dodge Only Dangerous", Keys.Space);
+                evadeMenu.KeyBind("Enabled", "Enabled",  System.Windows.Forms.Keys.K, KeyBindType.Toggle);
+                evadeMenu.KeyBind("OnlyDangerous", "Dodge Only Dangerous", System.Windows.Forms.Keys.Space);
             }
             FioraProject.Program.Menu.AddSubMenu(evadeMenu);
         }
