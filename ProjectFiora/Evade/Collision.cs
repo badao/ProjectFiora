@@ -12,10 +12,8 @@
     public enum CollisionObjectTypes
     {
         Minion,
-
-        Champion,
-
-        YasuoWall
+        Champions,
+        YasuoWall,
     }
 
     internal class FastPredResult
@@ -119,7 +117,7 @@
                                         Type = CollisionObjectTypes.Minion, Distance = pos.Distance(@from), Diff = w
                                     });
                         break;
-                    case CollisionObjectTypes.Champion:
+                    case CollisionObjectTypes.Champions:
                         collisions.AddRange(
                             from hero in HeroManager.Allies.Where(i => i.IsValidTarget(1200, false) && !i.IsMe)
                             let pred =

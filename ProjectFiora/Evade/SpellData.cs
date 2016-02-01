@@ -74,6 +74,8 @@
 
         public int MultipleNumber = -1;
 
+        public EarlyObjects[] EarlyEvade;
+
         public int RingRadius;
 
         public SpellSlot Slot;
@@ -123,6 +125,14 @@
 
         public int RawRange { get; private set; }
 
+
         #endregion
+    }
+    public enum EarlyObjects
+    {
+        Allies,
+        Minions,
+        AllyObjects,
+        Wall
     }
 }
