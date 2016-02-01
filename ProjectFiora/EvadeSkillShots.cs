@@ -20,7 +20,6 @@ namespace FioraProject
         #region Evade
         public static void Evading()
         {
-
             var parry = Evade.EvadeSpellDatabase.Spells.FirstOrDefault(i => i.Enable && i.IsReady && i.Slot == SpellSlot.W);
             if (parry == null)
             {

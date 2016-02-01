@@ -92,7 +92,7 @@ namespace FioraProject.Evade
                             //{
                             subMenu.Slider(spell.Slot + "Delay", "Extra Delay", 100, 0, 150);
                             //}
-                            subMenu.Slider("DangerLevel", "If Danger Level >=", 3, 1, 5);
+                            subMenu.Slider("DangerLevel", "If Danger Level >=", 1, 1, 5);
                             //if (spell.IsTargetted && spell.ValidTargets.Contains(SpellValidTargets.AllyWards))
                             //{
                             //    subMenu.Bool("WardJump", "Ward Jump");
