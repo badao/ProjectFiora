@@ -157,7 +157,7 @@ namespace FioraProject
             Drawing.OnDraw += Drawing_OnDraw;
             Drawing.OnEndScene += Drawing_OnEndScene;
 
-            //GameObject.OnCreate += GameObject_OnCreate;
+            GameObject.OnCreate += GameObject_OnCreate;
             Game.OnUpdate += Game_OnGameUpdate;
             Orbwalking.AfterAttack += AfterAttack;
             Orbwalking.AfterAttackNoTarget += Orbwalking_AfterAttackNoTarget;
@@ -172,6 +172,13 @@ namespace FioraProject
             //evade
             FioraProject.Evade.Evade.Evading += EvadeSkillShots.Evading;
             Game.PrintChat("Welcome to FioraWorld");
+        }
+
+        private static void GameObject_OnCreate(GameObject sender, EventArgs args)
+        {
+            //if (!sender.Name.ToLower().Contains("fiora"))
+            //    return;
+            //Game.PrintChat(sender.Name + sender.Type    );
         }
 
         // events 

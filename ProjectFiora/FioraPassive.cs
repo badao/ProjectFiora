@@ -215,7 +215,7 @@ namespace FioraProject
             FioraPassiveObjects = new List<Obj_GeneralParticleEmitter>();
             FioraUltiPassiveObjects = new List<Obj_GeneralParticleEmitter>();
             var ObjectEmitter = ObjectManager.Get<Obj_GeneralParticleEmitter>()
-                                             .Where(a => FioraPassiveName.Contains(a.Name) || FioraPassiveName.Contains(a.Name)
+                                             .Where(a => FioraPassiveName.Contains(a.Name) || FioraPrePassiveName.Contains(a.Name)
                                              || a.Name.Contains("Fiora_Base_R_Mark")
                                              || (a.Name.Contains("Fiora_Base_R") && a.Name.Contains("Timeout_FioraOnly.troy")))
                                              .ToList();

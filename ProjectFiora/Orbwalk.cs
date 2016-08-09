@@ -934,6 +934,7 @@ namespace FioraProject
                     }
 
                     var target = GetTarget();
+                    target = target.IsValidTarget() && InAutoAttackRange(target) ? target : null;
                     Orbwalk(
                         target, (_orbwalkingPoint.To2D().IsValid()) ? _orbwalkingPoint : Game.CursorPos,
                         _config.Item("ExtraWindup").GetValue<Slider>().Value,
