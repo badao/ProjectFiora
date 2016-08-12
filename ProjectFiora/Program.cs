@@ -633,23 +633,23 @@ namespace FioraProject
                         || (TargetingMode == TargetMode.Priority && OrbwalkToPassivePriority && (OrbwalkPriorityUnderTower || !Player.UnderTurret(true)))))
                     {
                         var point = status.PassivePredictedPositions.OrderBy(x => x.Distance(Player.Position.To2D())).FirstOrDefault();
-                        point = point.IsValid() ? point : Game.CursorPos.To2D();
+                        point = point.IsValid() ? target.Position.To2D().Extend(point, 150) : Game.CursorPos.To2D();
                         Orbwalker.SetOrbwalkingPoint(point.To3D());
                         // humanizer
-                        if (Orbwalking.InAutoAttackRange(target)
-                                && status.PassivePredictedPositions.Any(x => Player.Position.To2D()
-                                    .InTheCone(status.TargetPredictedPosition, x, 90)))
-                        {
-                            Orbwalker.SetMovement(false);
-                            return;
-                        }
+                        //if (Orbwalking.InAutoAttackRange(target)
+                        //        && status.PassivePredictedPositions.Any(x => Player.Position.To2D()
+                        //            .InTheCone(status.TargetPredictedPosition, x, 90)))
+                        //{
+                        //    Orbwalker.SetMovement(false);
+                        //    return;
+                        //}
                     }
                     else Orbwalker.SetOrbwalkingPoint(Game.CursorPos);
                 }
                 else Orbwalker.SetOrbwalkingPoint(Game.CursorPos);
             }
             else Orbwalker.SetOrbwalkingPoint(Game.CursorPos);
-            Orbwalker.SetMovement(true);
+            //Orbwalker.SetMovement(true);
         }
         #endregion OrbwalkToPassive
     }

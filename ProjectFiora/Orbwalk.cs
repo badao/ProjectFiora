@@ -262,6 +262,10 @@ namespace FioraProject
             {
                 return true;
             }
+            if (Utils.GameTimeTickCount <= LastMoveCommandT + 150)
+            {
+                return false;
+            }
             if (StopMove == false)
             {
                 return true;
